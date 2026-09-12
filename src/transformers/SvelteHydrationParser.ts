@@ -52,7 +52,9 @@ export class SvelteHydrationParser {
         phase = String(obj.phaseType || obj.phase || obj.PhaseType);
       }
       if (obj.installStatus || obj.installationStatus || obj.InstallationStatus) {
-        installationStatus = String(obj.installStatus || obj.installationStatus || obj.InstallationStatus);
+        installationStatus = String(
+          obj.installStatus || obj.installationStatus || obj.InstallationStatus,
+        );
       }
       if (obj.installationType || obj.InstallationType) {
         installationType = String(obj.installationType || obj.InstallationType);
@@ -61,9 +63,12 @@ export class SvelteHydrationParser {
       if (obj.zone || obj.Zone) zone = String(obj.zone || obj.Zone);
       if (obj.circle || obj.Circle) circle = String(obj.circle || obj.Circle);
       if (obj.division || obj.Division) division = String(obj.division || obj.Division);
-      if (obj.subdivision || obj.Subdivision) subdivision = String(obj.subdivision || obj.Subdivision);
+      if (obj.subdivision || obj.Subdivision)
+        subdivision = String(obj.subdivision || obj.Subdivision);
       if (obj.subStation || obj.substation || obj['Sub Station'] || obj.Substation) {
-        subStation = String(obj.subStation || obj.substation || obj['Sub Station'] || obj.Substation);
+        subStation = String(
+          obj.subStation || obj.substation || obj['Sub Station'] || obj.Substation,
+        );
       }
       if (obj.feeder || obj.Feeder) feeder = String(obj.feeder || obj.Feeder);
       if (obj.dt || obj.DT) dt = String(obj.dt || obj.DT);
@@ -76,14 +81,17 @@ export class SvelteHydrationParser {
         primitiveStrings.push(node);
 
         // Check if string contains embedded JSON (e.g. classData / installed_meter)
-        if (node.startsWith('{') && (node.includes('installed_meter') || node.includes('MeterId'))) {
+        if (
+          node.startsWith('{') &&
+          (node.includes('installed_meter') || node.includes('MeterId'))
+        ) {
           try {
             const parsed = JSON.parse(node);
             const target = parsed.installed_meter || parsed.meter || parsed;
             if (typeof target === 'object' && target !== null) {
               processObject(target as Record<string, unknown>);
             }
-          } catch (e) {
+          } catch {
             // Suppress JSON parse errors on normal text
           }
         }
@@ -117,7 +125,11 @@ export class SvelteHydrationParser {
                   const mapObj = item as Record<string, unknown>;
                   const keys = Object.keys(mapObj);
 
-                  if (keys.includes('Zone') || keys.includes('Circle') || keys.includes('Installation Type')) {
+                  if (
+                    keys.includes('Zone') ||
+                    keys.includes('Circle') ||
+                    keys.includes('Installation Type')
+                  ) {
                     const resolveIndex = (val: unknown): string => {
                       if (typeof val === 'number' && dataArr[val] !== undefined) {
                         return String(dataArr[val]);
@@ -168,7 +180,14 @@ export class SvelteHydrationParser {
 
     // String primitive fallback scanning for serialNumber & make
     if (serialNumber === 'UNKNOWN') {
-      const serialMatch = primitiveStrings.find((s) => /^SE\d+/i.test(s) || /^GE\d+/i.test(s) || /^AL\d+/i.test(s) || /^L&\d+/i.test(s) || /^HP\d+/i.test(s));
+      const serialMatch = primitiveStrings.find(
+        (s) =>
+          /^SE\d+/i.test(s) ||
+          /^GE\d+/i.test(s) ||
+          /^AL\d+/i.test(s) ||
+          /^L&\d+/i.test(s) ||
+          /^HP\d+/i.test(s),
+      );
       if (serialMatch) serialNumber = serialMatch;
     }
 
@@ -179,8 +198,17 @@ export class SvelteHydrationParser {
     }
 
     logger.debug(
-      { requestedMeterId, serialNumber, make, phase, installationStatus, installationType, zone, dt },
-      'SvelteHydrationParser extracted hydration properties'
+      {
+        requestedMeterId,
+        serialNumber,
+        make,
+        phase,
+        installationStatus,
+        installationType,
+        zone,
+        dt,
+      },
+      'SvelteHydrationParser extracted hydration properties',
     );
 
     return {

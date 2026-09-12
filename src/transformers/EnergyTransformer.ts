@@ -5,7 +5,8 @@ export class EnergyTransformer {
   public static toRecordDTO(item: LegacyEnergyItemDTO): PublicEnergyRecordDTO {
     const kWh = typeof item.kwh === 'number' ? item.kwh : parseFloat(String(item.kwh || '0'));
     const kVAh = typeof item.kvah === 'number' ? item.kvah : parseFloat(String(item.kvah || '0'));
-    const voltage = typeof item.voltR === 'number' ? item.voltR : parseFloat(String(item.voltR || '0'));
+    const voltage =
+      typeof item.voltR === 'number' ? item.voltR : parseFloat(String(item.voltR || '0'));
 
     return {
       timestamp: EnergyTransformer.formatIsoTimestamp(item.timestamp),
@@ -24,7 +25,9 @@ export class EnergyTransformer {
     }
 
     // Parse DD/MM/YYYY HH:mm format
-    const match = rawTimestamp.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?/);
+    const match = rawTimestamp.match(
+      /^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?/,
+    );
     if (match) {
       const [, day, month, year, hours = '00', minutes = '00', seconds = '00'] = match;
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;

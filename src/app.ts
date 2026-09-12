@@ -30,7 +30,7 @@ app.use(
     customProps: (req) => ({
       requestId: (req as RequestWithId).requestId,
     }),
-  })
+  }),
 );
 
 // Body Parsing
@@ -67,7 +67,11 @@ app.use('/api/v1/export', limiter, exportRouter);
 
 // 404 Handler
 app.use((req: Request, res: Response) => {
-  ErrorMapper.handle(new NotFoundError(`Route ${req.method} ${req.path} not found`), res, (req as RequestWithId).requestId);
+  ErrorMapper.handle(
+    new NotFoundError(`Route ${req.method} ${req.path} not found`),
+    res,
+    (req as RequestWithId).requestId,
+  );
 });
 
 // Global Error Handler

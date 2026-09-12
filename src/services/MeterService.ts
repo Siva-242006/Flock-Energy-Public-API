@@ -2,7 +2,11 @@ import { LegacyAdapter } from '../legacy/client';
 import { MeterTransformer } from '../transformers/MeterTransformer';
 import { SvelteHydrationParser } from '../transformers/SvelteHydrationParser';
 import { EnergyTransformer } from '../transformers/EnergyTransformer';
-import { PublicMeterSummaryDTO, PublicMeterDetailDTO, PublicEnergyResponseDTO } from '../dto/public';
+import {
+  PublicMeterSummaryDTO,
+  PublicMeterDetailDTO,
+  PublicEnergyResponseDTO,
+} from '../dto/public';
 import { NotFoundError } from '../utils/ErrorMapper';
 import { logger } from '../utils/logger';
 
@@ -15,7 +19,7 @@ export class MeterService {
 
   public async searchMeters(
     query: string = '',
-    page: number = 1
+    page: number = 1,
   ): Promise<{ items: PublicMeterSummaryDTO[]; page: number; pageSize: number; total: number }> {
     logger.info({ query, page }, 'MeterService searching meters');
     const legacyResult = await this.legacyAdapter.searchMeters(query, page);
@@ -36,7 +40,10 @@ export class MeterService {
     // Execute parallel independent requests for SvelteKit hydration payload, Geo location, and Search master record
     const [rawHydration, rawGeo, searchResult] = await Promise.all([
       this.legacyAdapter.getMeterDataJson(meterId).catch((err) => {
-        logger.warn({ meterId, error: (err as Error).message }, 'Failed to fetch hydration payload');
+        logger.warn(
+          { meterId, error: (err as Error).message },
+          'Failed to fetch hydration payload',
+        );
         return null;
       }),
       this.legacyAdapter.getMeterGeo(meterId).catch((err) => {
@@ -51,7 +58,7 @@ export class MeterService {
 
     // Find exact match from master search catalog
     const searchMatch = searchResult?.data?.find(
-      (item) => item.meterId?.toLowerCase() === meterId.toLowerCase()
+      (item) => item.meterId?.toLowerCase() === meterId.toLowerCase(),
     );
 
     // If meter does not exist in hydration, geo, and search catalog, throw 404 METER_NOT_FOUND
@@ -67,7 +74,8 @@ export class MeterService {
       if (searchMatch.serialNo) extractedHydration.serialNumber = searchMatch.serialNo;
       if (searchMatch.make) extractedHydration.make = searchMatch.make;
       if (searchMatch.phaseType) extractedHydration.phase = searchMatch.phaseType;
-      if (searchMatch.installStatus) extractedHydration.installationStatus = searchMatch.installStatus;
+      if (searchMatch.installStatus)
+        extractedHydration.installationStatus = searchMatch.installStatus;
     }
 
     return MeterTransformer.toDetailDTO(extractedHydration, rawGeo?.data);
@@ -83,7 +91,7 @@ export class MeterService {
       // Check if meter exists at all
       const searchResult = await this.legacyAdapter.searchMeters(meterId, 1).catch(() => null);
       const searchMatch = searchResult?.data?.find(
-        (item) => item.meterId?.toLowerCase() === meterId.toLowerCase()
+        (item) => item.meterId?.toLowerCase() === meterId.toLowerCase(),
       );
       if (!searchMatch) {
         throw new NotFoundError(`Meter with ID '${meterId}' not found`, 'METER_NOT_FOUND');

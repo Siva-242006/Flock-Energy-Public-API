@@ -7,7 +7,10 @@ export class DTTransformer {
       code: item.code,
       name: item.name,
       feederCode: item.feederCode,
-      capacityKva: typeof item.capacityKva === 'number' ? item.capacityKva : parseFloat(String(item.capacityKva)),
+      capacityKva:
+        typeof item.capacityKva === 'number'
+          ? item.capacityKva
+          : parseFloat(String(item.capacityKva)),
     };
   }
 }

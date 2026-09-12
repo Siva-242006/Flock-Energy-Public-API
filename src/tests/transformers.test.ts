@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from '@jest/globals';
 import { SvelteHydrationParser } from '../transformers/SvelteHydrationParser';
 import { MeterTransformer } from '../transformers/MeterTransformer';
 import { EnergyTransformer } from '../transformers/EnergyTransformer';

@@ -106,7 +106,7 @@ Flock-Energy-Public-API/
 │   ├── utils/              # ErrorMapper & Pino Logger
 │   ├── app.ts              # Express application setup
 │   ├── server.ts           # HTTP server entry point
-│   └── tests/              # Vitest test suite
+│   └── tests/              # Jest & Supertest test suite
 ├── openapi.json            # OpenAPI 3.1.0 JSON specification
 ├── PROTOCOL.md             # Detailed legacy protocol & discovery analysis
 ├── ARCHITECTURE.md         # Detailed architectural flow & design document
@@ -266,9 +266,17 @@ npm run build
 npm start
 ```
 
-### Automated Test Suite (Vitest)
+### Automated Test Suite (Jest & Supertest)
 ```bash
-npm test
+npm test            # Run 14-test suite with Jest & Supertest
+npm run test:watch  # Run Jest in watch mode
+```
+
+### Code Quality & Formatting (ESLint & Prettier)
+```bash
+npm run lint        # Check codebase against ESLint rules
+npm run format      # Format source code using Prettier
+npm run format:check # Verify Prettier formatting compliance
 ```
 
 ---

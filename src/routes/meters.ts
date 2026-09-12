@@ -8,6 +8,10 @@ const controller = new MeterController();
 
 router.get('/', validate({ query: searchMetersQuerySchema }), controller.searchMeters);
 router.get('/:meterId', validate({ params: getMeterParamsSchema }), controller.getMeterById);
-router.get('/:meterId/energy', validate({ params: getMeterParamsSchema }), controller.getMeterEnergy);
+router.get(
+  '/:meterId/energy',
+  validate({ params: getMeterParamsSchema }),
+  controller.getMeterEnergy,
+);
 
 export default router;
