@@ -73,5 +73,5 @@ To keep the scope clean and targeted, we intentionally excluded:
 
 ## 🔬 7. Self-Review & Criticism
 
-- **Test Suite Scope**: While Vitest unit coverage is strong across transformers, session manager, and routes, adding mock integration tests for multi-page pagination would further strengthen testing.
+- **Test Suite Scope**: While Jest and Supertest test coverage is strong across transformers, session manager, and routes, adding mock integration tests for multi-page pagination would further strengthen testing.
 - **Documentation Completeness**: Created a complete 6-document technical suite (`README.md`, `PROTOCOL.md`, `ARCHITECTURE.md`, `API_MAPPING.md`, `LEGACY_ENDPOINTS.md`, `REFLECTION.md`) and OpenAPI specification to ensure clear project handover.

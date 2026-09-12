@@ -11,7 +11,7 @@ export class DTService {
   }
 
   public async getDts(
-    page: number = 1
+    page: number = 1,
   ): Promise<{ items: PublicDTDTO[]; page: number; pageSize: number; total: number }> {
     logger.info({ page }, 'DTService fetching Distribution Transformers');
     const legacyResult = await this.legacyAdapter.getDts(page);

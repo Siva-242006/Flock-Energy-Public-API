@@ -8,8 +8,9 @@ coverage/
 
 # Environment Variables
 .env
-.env.local
-.env.production
+*.env
+.env.*
+!.env.example
 
 # IDE & Editor Files
 .vscode/

@@ -16,7 +16,7 @@ export class MeterTransformer {
 
   public static toDetailDTO(
     hydrationData: ExtractedHydrationData,
-    geoData?: LegacyGeoDataDTO
+    geoData?: LegacyGeoDataDTO,
   ): PublicMeterDetailDTO {
     const lat = geoData?.latitude ? parseFloat(geoData.latitude) : 0;
     const lng = geoData?.longitude ? parseFloat(geoData.longitude) : 0;

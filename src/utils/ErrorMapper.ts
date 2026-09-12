@@ -9,7 +9,11 @@ export class AppError extends Error {
   public statusCode: number;
   public errorCode: string;
 
-  constructor(message: string, statusCode: number = 500, errorCode: string = 'INTERNAL_SERVER_ERROR') {
+  constructor(
+    message: string,
+    statusCode: number = 500,
+    errorCode: string = 'INTERNAL_SERVER_ERROR',
+  ) {
     super(message);
     this.name = 'AppError';
     this.statusCode = statusCode;
@@ -73,7 +77,11 @@ export class ErrorMapper {
       const axiosErr = error as AxiosError;
 
       // Timeout check
-      if (axiosErr.code === 'ECONNABORTED' || axiosErr.code === 'ETIMEDOUT' || axiosErr.message.includes('timeout')) {
+      if (
+        axiosErr.code === 'ECONNABORTED' ||
+        axiosErr.code === 'ETIMEDOUT' ||
+        axiosErr.message.includes('timeout')
+      ) {
         const payload: StandardErrorResponse = {
           success: false,
           message: 'Upstream legacy service timed out',
@@ -109,6 +117,7 @@ export class ErrorMapper {
 
     // 5. Fallback Internal Server Error
     const fallbackMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    logger.error({ error, fallbackMessage, requestId }, 'Unhandled fallback internal server error');
     const payload: StandardErrorResponse = {
       success: false,
       message: 'Internal server error',
